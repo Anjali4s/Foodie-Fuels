@@ -45,17 +45,18 @@ public class Employee {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    @OneToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
-    @JsonIgnore
-    private User user;
+//    @OneToOne
+//    @JoinColumn(name = "user_id", referencedColumnName = "id")
+//    @JsonIgnore
+//    private User user;
 
     @OneToMany(mappedBy = "createdBy", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private List<MenuItem> menuItems;
 
     @OneToMany(mappedBy = "createdBy", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonIgnore
+   @JsonIgnore
+   // @JsonManagedReference
     private List<Order> orders;
 
     @PrePersist

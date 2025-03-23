@@ -1,9 +1,13 @@
 package com.curiouscoders.model;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -23,6 +27,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Entity
 @Table(name = "orders")
+
 public class Order {
 
     @Id
@@ -36,15 +41,14 @@ public class Order {
     private LocalDateTime orderTime;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user; // User who placed the order
-
-    @ManyToOne
-    @JoinColumn(name = "created_By")
+    @JoinColumn(name = "created_by")
     @JsonIgnore
     private Employee createdBy; // Employee who processed the order
 
+    // New Many-to-Many relationship with quantity
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<OrderItem> orderItems; // Items in the order
+    @JsonIgnore
+    private List<OrderMenuItem> orderMenuItems = new ArrayList<>();
+
 }
 

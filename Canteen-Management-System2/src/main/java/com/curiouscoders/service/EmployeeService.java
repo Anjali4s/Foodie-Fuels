@@ -1,12 +1,12 @@
 package com.curiouscoders.service;
 
 import java.util.List;
+
 import org.springframework.stereotype.Service;
+
 import com.curiouscoders.exception.EmployeeNotFoundException;
 import com.curiouscoders.model.Employee;
-import com.curiouscoders.model.User;
 import com.curiouscoders.repository.EmployeeRepository;
-import com.curiouscoders.repository.UserRepository;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +16,7 @@ import lombok.RequiredArgsConstructor;
 public class EmployeeService implements IEmployeeService {
 
 	private final EmployeeRepository employeeRepository;
-	private final UserRepository userRepository;
+	//private final UserRepository userRepository;
 
 
     // Create a new employee
@@ -37,12 +37,12 @@ public class EmployeeService implements IEmployeeService {
 	    }
 
 	    // Ensure User is saved first before Employee
-	    if (employee.getUser() != null) {
-	        User user = employee.getUser();
-	        user.setActive(true); // Default active status
-	        user = userRepository.save(user); // Save User first
-	        employee.setUser(user); // Assign persisted user
-	    }
+//	    if (employee.getUser() != null) {
+//	        User user = employee.getUser();
+//	        user.setActive(true); // Default active status
+//	        user = userRepository.save(user); // Save User first
+//	        employee.setUser(user); // Assign persisted user
+//	    }
 
 	    // Save Employee after ensuring User is persisted
 	    employee.setActive(true); // Default status

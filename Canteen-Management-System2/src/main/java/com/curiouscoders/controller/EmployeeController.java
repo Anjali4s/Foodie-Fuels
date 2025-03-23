@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -15,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.curiouscoders.model.Employee;
-import com.curiouscoders.model.User;
 import com.curiouscoders.service.EmployeeService;
 
 import lombok.RequiredArgsConstructor;
@@ -23,6 +23,7 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("/employees")
 @RequiredArgsConstructor
+@CrossOrigin(origins = "http://127.0.0.1:5500")
 public class EmployeeController {
     @Autowired
     private EmployeeService employeeService;
@@ -49,13 +50,7 @@ public class EmployeeController {
             if (email == null || email.trim().isEmpty()) {
                 return ResponseEntity.badRequest().body("Email cannot be empty");
             }
-
-            // Create User entity
-            User user = new User();
-            user.setName(firstName + " " + lastName);
-            user.setEmail(email);
-            user.setPassword("defaultPassword"); // Set a default password
-            user.setActive(true);
+            
 
             // Create Employee entity
             Employee employee = new Employee();
@@ -63,7 +58,7 @@ public class EmployeeController {
             employee.setLastName(lastName);
             employee.setRole(role);
             employee.setEmail(email);
-            employee.setUser(user); // Assign User to Employee
+           // employee.setUser(user); // Assign User to Employee
 
             // Save Employee (User will be saved due to cascading)
             Employee createdEmployee = employeeService.createEmployee(employee);
