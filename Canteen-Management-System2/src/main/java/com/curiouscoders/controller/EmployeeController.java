@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,6 +28,8 @@ import lombok.RequiredArgsConstructor;
 public class EmployeeController {
     @Autowired
     private EmployeeService employeeService;
+    
+    //private BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
 
     @GetMapping("/home")
     public ResponseEntity<String> home() {
@@ -40,6 +43,7 @@ public class EmployeeController {
             String lastName = (String) requestBody.get("lastName");
             String email = (String) requestBody.get("email");
             String role = (String) requestBody.get("role");
+            String password = (String) requestBody.get("password");
 
             if (firstName == null || firstName.trim().isEmpty()) {
                 return ResponseEntity.badRequest().body("First name cannot be empty");
@@ -56,8 +60,10 @@ public class EmployeeController {
             Employee employee = new Employee();
             employee.setFirstName(firstName);
             employee.setLastName(lastName);
-            employee.setRole(role);
+            //employee.setRole("USER");
             employee.setEmail(email);
+            employee.setPassword(password);
+            employee.setRole("USER");
            // employee.setUser(user); // Assign User to Employee
 
             // Save Employee (User will be saved due to cascading)
@@ -96,6 +102,7 @@ public class EmployeeController {
         employee.setLastName(lastName);
         employee.setEmail(email);
         employee.setRole(role);
+        //employee.setPassword(passwordEncoder.encode(password));
 
         Employee updatedEmployee = employeeService.updateEmployee(id, employee);
         return ResponseEntity.ok(updatedEmployee);

@@ -2,6 +2,7 @@ package com.curiouscoders.service;
 
 import java.util.List;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.curiouscoders.exception.EmployeeNotFoundException;
@@ -17,6 +18,8 @@ public class EmployeeService implements IEmployeeService {
 
 	private final EmployeeRepository employeeRepository;
 	//private final UserRepository userRepository;
+	
+	private BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
 
 
     // Create a new employee
@@ -34,6 +37,18 @@ public class EmployeeService implements IEmployeeService {
 	    }
 	    if (employeeRepository.existsByEmail(employee.getEmail())) {
 	        throw new IllegalArgumentException("Email is already registered");
+	    }
+	    if (employee.getRole() == null || employee.getRole().trim().isEmpty()) {
+	        employee.setRole("USER");  
+	    }
+
+	    
+	 // Encode password before saving
+	    if (employee.getPassword() != null && !employee.getPassword().trim().isEmpty()) {
+	        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+	        employee.setPassword(passwordEncoder.encode(employee.getPassword()));
+	    } else {
+	        throw new IllegalArgumentException("Password cannot be empty");
 	    }
 
 	    // Ensure User is saved first before Employee

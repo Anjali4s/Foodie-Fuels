@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -37,8 +38,10 @@ public class Employee {
     private String lastName;
 
     private String email; 
-
-    private String role;
+    @Column(nullable = false)
+    private String role="USER";
+    
+    private String password;
 
     private Boolean active = true; // Default active status
 
